@@ -96,7 +96,7 @@ await ReactNativeBlobUtil.fs.unlink(path);
 
 ## 📄 License
 
-MIT © 2024 Nguyen Dinh Anh Tuan
+MIT © 2026 Nguyen Dinh Anh Tuan
 
 ---
 
