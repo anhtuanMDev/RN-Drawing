@@ -86,7 +86,7 @@ const Header = ({ canvasRef }: { canvasRef: React.RefObject<null> }) => {
           onPress={save}
           style={[styles.button, styles.saveButton]}
         >
-          <Text style={[styles.buttonText, styles.saveColor]}>⬇ Save SVG</Text>
+          <Text style={[styles.buttonText, styles.saveColor]}>⬇ Save Image</Text>
         </TouchableOpacity>
       </View>
     </View>

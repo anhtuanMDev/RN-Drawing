@@ -1,6 +1,3 @@
-Readme · MD
-Copy
-
 # ✏️ Drawing App — React Native Skia
 
 A smooth, performant drawing application built with React Native and React Native Skia. Draw freely on a canvas with touch gestures, supporting multiple brush sizes, colors, and undo/redo functionality.
@@ -32,6 +29,8 @@ A smooth, performant drawing application built with React Native and React Nativ
 | [@shopify/react-native-skia](https://shopify.github.io/react-native-skia/) | High-performance 2D canvas rendering |
 | [React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/) | Touch and gesture input |
 | [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/) | Shared value animations |
+| [react-native-blob-util](https://github.com/RonRadtke/react-native-blob-util) | Writing snapshot to temp cache file |
+| [@react-native-camera-roll/camera-roll](https://github.com/react-native-cameraroll/react-native-cameraroll) | Saving image to device gallery |
 
 ---
 
@@ -70,23 +69,6 @@ npx react-native run-android
 
 # iOS
 npx react-native run-ios
-```
-
----
-
-## 📁 Project Structure
-
-```
-src/
-├── components/
-│   ├── Canvas.tsx        # Drawing canvas using Skia
-│   ├── Toolbar.tsx       # Brush/color controls
-│   └── ColorPicker.tsx   # Color selection UI
-├── hooks/
-│   └── useDrawing.ts     # Drawing state and logic
-├── utils/
-│   └── pathUtils.ts      # Path calculation helpers
-└── App.tsx
 ```
 
 ---
