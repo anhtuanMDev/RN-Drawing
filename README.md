@@ -1,97 +1,129 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+Readme · MD
+Copy
 
-# Getting Started
+# ✏️ Drawing App — React Native Skia
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+A smooth, performant drawing application built with React Native and React Native Skia. Draw freely on a canvas with touch gestures, supporting multiple brush sizes, colors, and undo/redo functionality.
 
-## Step 1: Start Metro
+---
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## 📸 Screenshots
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+![Demo](src/assets/demo.png)
 
-```sh
-# Using npm
-npm start
+---
 
-# OR using Yarn
-yarn start
+## 🚀 Features
+
+- Freehand drawing with touch input
+- Customizable brush size and color
+- Undo / Redo support
+- Clear canvas
+- Smooth 60fps rendering powered by Skia
+- Works on both iOS and Android
+
+---
+
+## 🛠️ Tech Stack
+
+| Library | Purpose |
+|---|---|
+| [React Native](https://reactnative.dev/) | Cross-platform mobile framework |
+| [@shopify/react-native-skia](https://shopify.github.io/react-native-skia/) | High-performance 2D canvas rendering |
+| [React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/) | Touch and gesture input |
+| [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/) | Shared value animations |
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+
+- Node.js >= 18
+- React Native CLI or Expo (with dev client)
+- Xcode (for iOS)
+- Android Studio (for Android)
+
+### Steps
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/drawing-app-rn.git
+cd drawing-app-rn
+
+# Install dependencies
+npm install
+# or
+yarn install
+
+# iOS — install pods
+cd ios && pod install && cd ..
 ```
 
-## Step 2: Build and run your app
+---
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+## ▶️ Running the App
 
-### Android
+```bash
+# Android
+npx react-native run-android
 
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+# iOS
+npx react-native run-ios
 ```
 
-### iOS
+---
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+## 📁 Project Structure
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+```
+src/
+├── components/
+│   ├── Canvas.tsx        # Drawing canvas using Skia
+│   ├── Toolbar.tsx       # Brush/color controls
+│   └── ColorPicker.tsx   # Color selection UI
+├── hooks/
+│   └── useDrawing.ts     # Drawing state and logic
+├── utils/
+│   └── pathUtils.ts      # Path calculation helpers
+└── App.tsx
 ```
 
-Then, and every time you update your native dependencies, run:
+---
 
-```sh
-bundle exec pod install
+## 🧠 How It Works
+
+Drawing is implemented by tracking touch gesture coordinates and constructing Skia `Path` objects in real time. Each stroke is stored as a path with its associated paint properties (color, stroke width, etc.), enabling undo/redo by simply maintaining a stack of strokes.
+
+React Native Skia renders all paths on a `<Canvas>` component, which runs on the UI thread via JSI for buttery-smooth performance without bridge overhead.
+
+### 💾 Saving to Camera Roll
+
+To save the drawing, `makeImageSnapshot()` is called on the canvas ref, which captures a pixel-perfect snapshot of the Skia canvas. The snapshot is then encoded to a base64 PNG string and written to a temporary cache file using `react-native-blob-util`. Once the file is written, it is saved to the device's camera roll via `@react-native-camera-roll/camera-roll`, and the temp file is cleaned up afterward.
+
+```ts
+const image = canvasRef.current?.makeImageSnapshot();
+const base64 = image.encodeToBase64();
+const path = `${ReactNativeBlobUtil.fs.dirs.CacheDir}/drawing_${Date.now()}.png`;
+await ReactNativeBlobUtil.fs.writeFile(path, base64, "base64");
+await CameraRoll.saveAsset(`file://${path}`, { type: "photo" });
+await ReactNativeBlobUtil.fs.unlink(path);
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+---
 
-```sh
-# Using npm
-npm run ios
+## 📄 License
 
-# OR using Yarn
-yarn ios
-```
+MIT © 2024 Nguyen Dinh Anh Tuan
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+---
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+## 🙏 Credits
 
-## Step 3: Modify your app
+This project was built following the excellent tutorial:
 
-Now that you have successfully run the app, let's make changes!
+**"Building a Drawing App with React Native Skia"**
+by the Notesnook team
+🔗 https://blog.notesnook.com/drawing-app-with-react-native-skia/
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Special thanks to the [Shopify](https://shopify.github.io/react-native-skia/) team for creating and maintaining React Native Skia.
